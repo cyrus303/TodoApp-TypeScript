@@ -4,25 +4,37 @@ import {FiCheck, FiDelete, FiEdit3} from 'react-icons/fi';
 interface Note {
   id: number;
   noteText: string;
+  status: boolean;
 }
 
 interface Props {
   notes: Note[];
   handleStatus: (id: number) => void;
+  handleDelete: (id: number) => void;
 }
 
-const SingleTodo: React.FC<Props> = ({notes, handleStatus}) => {
-  const handleTick = (id: number) => {
-    handleStatus(id);
-  };
-  console.log('inside todo ' + notes);
+const SingleTodo: React.FC<Props> = ({
+  notes,
+  handleStatus,
+  handleDelete,
+}) => {
   return (
     <div className="note-container">
       {notes.map((note) => {
-        console.log('inside map' + note);
         return (
           <div className="note" key={note.id}>
-            {note.noteText}
+            {note.status === false ? (
+              note.noteText
+            ) : (
+              <span
+                style={{
+                  textDecoration: 'line-through',
+                  color: '#444',
+                }}
+              >
+                {note.noteText}
+              </span>
+            )}
             <div className="icons">
               <button className="icon-btn">
                 <FiEdit3 />
@@ -30,12 +42,17 @@ const SingleTodo: React.FC<Props> = ({notes, handleStatus}) => {
               <button
                 className="icon-btn"
                 onClick={() => {
-                  handleTick(note.id);
+                  handleStatus(note.id);
                 }}
               >
                 <FiCheck />
               </button>
-              <button className="icon-btn">
+              <button
+                className="icon-btn"
+                onClick={() => {
+                  handleDelete(note.id);
+                }}
+              >
                 <FiDelete />
               </button>
             </div>

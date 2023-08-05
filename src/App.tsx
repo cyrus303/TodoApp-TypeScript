@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {KeyboardEventHandler, useState} from 'react';
 import './App.css';
 import SingleTodo from './components/SingleTodo';
 
@@ -37,6 +37,9 @@ function App() {
   const handleBtnClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    const re = /[a-zA-Z0-9!@#$%^&*()-_+=]/g;
+    const found = re.test(inputText);
+    if (!found) return;
     setInputText('');
     const len = notes.length;
     const newNote = {
@@ -50,19 +53,24 @@ function App() {
   };
 
   const handleStatus = (id: number): void => {
-    let currentNote = notes.filter((note) => note.id === id);
-    let currentNoteObj = currentNote[0];
-    currentNoteObj = {
-      ...currentNoteObj,
-      status: !currentNoteObj.status,
-    };
-    const updatedStatus = {...notes, currentNoteObj};
-    setNotes(updatedStatus);
-    console.log(notes);
+    const updatedNotes = notes.map((note) => {
+      if (note.id === id) {
+        return {...note, status: !note.status};
+      }
+      return note;
+    });
+    setNotes(updatedNotes);
+  };
+
+  const handleDelete = (id: number): void => {
+    const updatedNotes = notes.filter((note) => {
+      return note.id !== id;
+    });
+    setNotes(updatedNotes);
   };
 
   return (
-    <body>
+    <div id="body">
       <div className="container">
         <header>
           <h1>Todo App</h1>
@@ -83,8 +91,12 @@ function App() {
           <ul id="todoList"></ul>
         </main>
       </div>
-      <SingleTodo notes={notes} handleStatus={handleStatus} />
-    </body>
+      <SingleTodo
+        notes={notes}
+        handleStatus={handleStatus}
+        handleDelete={handleDelete}
+      />
+    </div>
   );
 }
 
