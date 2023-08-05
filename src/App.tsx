@@ -122,6 +122,7 @@ function App() {
         handleStatus={handleStatus}
         handleDelete={handleDelete}
         handleEdit={handleEdit}
+        setNotes={setNotes}
       />
     </div>
   );

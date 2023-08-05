@@ -13,6 +13,7 @@ interface Props {
   handleStatus: (id: number) => void;
   handleDelete: (id: number) => void;
   handleEdit: (id: number) => void;
+  setNotes: () => void;
 }
 
 const SingleTodo: React.FC<Props> = ({
@@ -20,11 +21,12 @@ const SingleTodo: React.FC<Props> = ({
   handleStatus,
   handleDelete,
   handleEdit,
+  setNotes,
 }) => {
-  const [editText, setEditText] = useState<string>('second');
+  const [editText, setEditText] = useState();
 
-  const handleEditText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditText(e.target.value);
+  const handleEditText = (event: any, id: number, setNotes: any) => {
+    setEditText(event.target.value);
   };
 
   return (
@@ -38,7 +40,9 @@ const SingleTodo: React.FC<Props> = ({
                   type="text"
                   value={editText}
                   id="note-input"
-                  onChange={handleEditText}
+                  onChange={(event) => {
+                    handleEditText(event, note.id, setNotes);
+                  }}
                 />
               ) : (
                 note.noteText
