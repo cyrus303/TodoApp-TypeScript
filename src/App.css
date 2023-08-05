@@ -116,3 +116,7 @@ li:last-child {
     margin-right:10px;
     /* margin-left: 20px; */
 }
+
+#note-input{
+margin-right: 40px;
+}

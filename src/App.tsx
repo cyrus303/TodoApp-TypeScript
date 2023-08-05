@@ -7,6 +7,7 @@ function App() {
     id: number;
     noteText: string;
     status: boolean;
+    editable: boolean;
   }
 
   const [inputText, setInputText] = useState<string>('');
@@ -15,16 +16,19 @@ function App() {
       id: 1,
       noteText: 'hello',
       status: true,
+      editable: false,
     },
     {
       id: 2,
       noteText: 'TS',
       status: false,
+      editable: true,
     },
     {
       id: 3,
       noteText: 'World',
       status: false,
+      editable: false,
     },
   ]);
 
@@ -80,6 +84,16 @@ function App() {
     setNotes(updatedNotes);
   };
 
+  const handleEdit = (id: number) => {
+    const updatedNotes = notes.map((note) => {
+      if (note.id === id) {
+        return {...note, editable: !note.editable};
+      }
+      return note;
+    });
+    setNotes(updatedNotes);
+  };
+
   return (
     <div id="body">
       <div className="container">
@@ -107,6 +121,7 @@ function App() {
         notes={notes}
         handleStatus={handleStatus}
         handleDelete={handleDelete}
+        handleEdit={handleEdit}
       />
     </div>
   );
