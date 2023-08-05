@@ -5,6 +5,7 @@ interface Note {
   id: number;
   noteText: string;
   status: boolean;
+  dueDate?: Date;
 }
 
 interface Props {
@@ -24,7 +25,7 @@ const SingleTodo: React.FC<Props> = ({
         return (
           <div className="note" key={note.id}>
             {note.status === false ? (
-              note.noteText
+              note.noteText + ' : due date - ' + note.dueDate
             ) : (
               <span
                 style={{

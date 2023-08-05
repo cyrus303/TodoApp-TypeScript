@@ -1,30 +1,38 @@
 import {useState} from 'react';
 import './App.css';
 import SingleTodo from './components/SingleTodo';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 function App() {
   interface note {
     id: number;
     noteText: string;
     status: boolean;
+    dueDate?: Date;
   }
 
   const [inputText, setInputText] = useState<string>('');
+  const [startDate, setStartDate] = useState(new Date());
   const [notes, setNotes] = useState<note[]>([
     {
       id: 1,
       noteText: 'hello',
       status: true,
+      dueDate: '06/08/2023',
     },
     {
       id: 2,
       noteText: 'TS',
       status: false,
+      dueDate: '12/10/2023',
     },
     {
       id: 3,
       noteText: 'World',
       status: false,
+      dueDate: '27/08/2023',
     },
   ]);
 
@@ -35,6 +43,7 @@ function App() {
       id: len + 1,
       noteText: inputText,
       status: false,
+      // dueDate: startDate,
     };
     const newNotesContent = [...notes, newNote];
     setNotes(newNotesContent);
@@ -95,6 +104,12 @@ function App() {
               value={inputText}
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
+            />
+            <DatePicker
+              showicon
+              selected={startDate}
+              onChange={(date: any) => setStartDate(date)}
+              dateFormat="dd/MM/yy"
             />
             <button id="addButton" onClick={handleBtnClick}>
               Add
