@@ -28,6 +28,18 @@ function App() {
     },
   ]);
 
+  const createNewNote = () => {
+    setInputText('');
+    const len = notes.length;
+    const newNote = {
+      id: len + 1,
+      noteText: inputText,
+      status: false,
+    };
+    const newNotesContent = [...notes, newNote];
+    setNotes(newNotesContent);
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -40,16 +52,15 @@ function App() {
     const re = /[a-zA-Z0-9!@#$%^&*()-_+=]/g;
     const found = re.test(inputText);
     if (!found) return;
-    setInputText('');
-    const len = notes.length;
-    const newNote = {
-      id: len + 1,
-      noteText: inputText,
-      status: false,
-    };
-    const newNotesContent = [...notes, newNote];
-    setNotes(newNotesContent);
-    console.log(notes);
+    createNewNote();
+  };
+
+  const handleKeyPress = (
+    event: React.KeyboardEvent<HTMLElement>
+  ) => {
+    if (event.key === 'Enter' && inputText.trim() !== '') {
+      createNewNote();
+    }
   };
 
   const handleStatus = (id: number): void => {
@@ -83,6 +94,7 @@ function App() {
               placeholder="Add a new task"
               value={inputText}
               onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
             />
             <button id="addButton" onClick={handleBtnClick}>
               Add
