@@ -1,4 +1,4 @@
-import {KeyboardEventHandler, useState} from 'react';
+import {useState} from 'react';
 import './App.css';
 import SingleTodo from './components/SingleTodo';
 
