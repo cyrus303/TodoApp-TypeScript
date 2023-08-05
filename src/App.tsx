@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useState} from 'react';
+import './App.css';
+import SingleTodo from './components/SingleTodo';
 
 function App() {
-  const [count, setCount] = useState(0)
+  interface note {
+    id: number;
+    noteText: string;
+    status: boolean;
+  }
+
+  const [inputText, setInputText] = useState<string>('');
+  const [notes, setNotes] = useState<note[]>([
+    {
+      id: 1,
+      noteText: 'hello',
+      status: true,
+    },
+    {
+      id: 2,
+      noteText: 'TS',
+      status: false,
+    },
+    {
+      id: 3,
+      noteText: 'World',
+      status: false,
+    },
+  ]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputText(e.target.value);
+  };
+
+  const handleBtnClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setInputText('');
+    const len = notes.length;
+    const newNote = {
+      id: len + 1,
+      noteText: inputText,
+      status: false,
+    };
+    const newNotesContent = [...notes, newNote];
+    setNotes(newNotesContent);
+    console.log(notes);
+  };
+
+  const handleStatus = (id: number): void => {
+    let currentNote = notes.filter((note) => note.id === id);
+    let currentNoteObj = currentNote[0];
+    currentNoteObj = {
+      ...currentNoteObj,
+      status: !currentNoteObj.status,
+    };
+    const updatedStatus = {...notes, currentNoteObj};
+    setNotes(updatedStatus);
+    console.log(notes);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <body>
+      <div className="container">
+        <header>
+          <h1>Todo App</h1>
+        </header>
+        <main>
+          <div className="input-container">
+            <input
+              type="text"
+              id="todoInput"
+              placeholder="Add a new task"
+              value={inputText}
+              onChange={handleInputChange}
+            />
+            <button id="addButton" onClick={handleBtnClick}>
+              Add
+            </button>
+          </div>
+          <ul id="todoList"></ul>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <SingleTodo notes={notes} handleStatus={handleStatus} />
+    </body>
+  );
 }
 
-export default App
+export default App;
